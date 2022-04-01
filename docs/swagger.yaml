@@ -1,4 +1,594 @@
+definitions:
+  controller.CustomerInput:
+    properties:
+      address:
+        type: string
+      name:
+        type: string
+    type: object
+  controller.LoginInput:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  controller.RegisterInput:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  controller.SellerInput:
+    properties:
+      address:
+        type: string
+      name:
+        type: string
+    type: object
+  controller.UserInput:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  controller.categoryInput:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+    type: object
+  models.Category:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  models.Customer:
+    properties:
+      address:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      userID:
+        type: integer
+    type: object
+  models.Seller:
+    properties:
+      address:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      userID:
+        type: integer
+    type: object
+  models.User:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      password:
+        type: string
+      role:
+        type: string
+      updated_at:
+        type: string
+      username:
+        type: string
+    type: object
 info:
-  contact: {}
-paths: {}
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+paths:
+  /categories:
+    get:
+      description: Get a list of Category.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Category'
+            type: array
+      summary: Get all Category.
+      tags:
+      - Category
+    post:
+      description: Creating a new Category.
+      parameters:
+      - description: the body to create a new Category
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/controller.categoryInput'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Category'
+      security:
+      - BearerToken: []
+      summary: Create New Category.
+      tags:
+      - Category
+  /categories/{id}:
+    delete:
+      description: Delete a Category by id.
+      parameters:
+      - description: Category id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: boolean
+            type: object
+      security:
+      - BearerToken: []
+      summary: Delete one Category.
+      tags:
+      - Category
+    get:
+      description: Get an Category by id.
+      parameters:
+      - description: Category id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Category'
+      summary: Get Category.
+      tags:
+      - Category
+    patch:
+      description: Update Category by id.
+      parameters:
+      - description: Category id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: the body to update age rating category
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/controller.categoryInput'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Category'
+      security:
+      - BearerToken: []
+      summary: Update Category.
+      tags:
+      - Category
+  /customer:
+    get:
+      description: Get a list of Customer.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Customer'
+            type: array
+      summary: Get all Customer.
+      tags:
+      - Customer
+    post:
+      description: Creating a new Customer.
+      parameters:
+      - description: the body to create a new Customer
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/controller.CustomerInput'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Customer'
+      security:
+      - BearerToken: []
+      summary: Register user as a Customer.
+      tags:
+      - Customer
+  /customer/{id}:
+    delete:
+      description: Delete a Customer by id.
+      parameters:
+      - description: Customer id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: boolean
+            type: object
+      security:
+      - BearerToken: []
+      summary: Delete one Customer.
+      tags:
+      - Customer
+    get:
+      description: Get an Customer by id.
+      parameters:
+      - description: Customer id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Customer'
+      summary: Get Customer.
+      tags:
+      - Customer
+    patch:
+      description: Update Customer by id.
+      parameters:
+      - description: Customer id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: the body to update customer
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/controller.CustomerInput'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Customer'
+      security:
+      - BearerToken: []
+      summary: Update Customer.
+      tags:
+      - Customer
+  /login:
+    post:
+      description: Logging in to get jwt token to access admin or user api by roles.
+      parameters:
+      - description: the body to login a user
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/controller.LoginInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Login as as user.
+      tags:
+      - Auth
+  /register:
+    post:
+      description: registering a user from public access.
+      parameters:
+      - description: the body to register a user
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/controller.RegisterInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Register a user.
+      tags:
+      - Auth
+  /seller:
+    get:
+      description: Get a list of Seller
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Seller'
+            type: array
+      summary: Get all Seller.
+      tags:
+      - Seller
+    post:
+      description: Creating a new Seller.
+      parameters:
+      - description: the body to create a new Seller
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/controller.SellerInput'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Seller'
+      security:
+      - BearerToken: []
+      summary: Register user as a Seller.
+      tags:
+      - Seller
+  /seller/{id}:
+    delete:
+      description: Delete a Seller by id.
+      parameters:
+      - description: Seller id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: boolean
+            type: object
+      security:
+      - BearerToken: []
+      summary: Delete one Seller.
+      tags:
+      - Seller
+    get:
+      description: Get an Seller by id.
+      parameters:
+      - description: Seller id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Seller'
+      summary: Get Seller by Id.
+      tags:
+      - Seller
+    patch:
+      description: Update seller by id.
+      parameters:
+      - description: Seller id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: the body to update seller
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/controller.CustomerInput'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Seller'
+      security:
+      - BearerToken: []
+      summary: Update Seller.
+      tags:
+      - Seller
+  /user:
+    get:
+      description: Get a list of User.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.User'
+            type: array
+      summary: Get all User.
+      tags:
+      - User
+  /user/{id}:
+    delete:
+      description: Delete a User by id.
+      parameters:
+      - description: User id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: boolean
+            type: object
+      security:
+      - BearerToken: []
+      summary: Delete one User.
+      tags:
+      - User
+    get:
+      description: Get an User by id.
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: Get User by Id.
+      tags:
+      - User
+    patch:
+      description: Update User by id.
+      parameters:
+      - description: User id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: the body to update user
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/controller.UserInput'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      security:
+      - BearerToken: []
+      summary: Update User.
+      tags:
+      - User
 swagger: "2.0"
