@@ -73,11 +73,10 @@ func UpdateUser(c *gin.Context) {
         return
     }
 
-	var loggedId interface{}
 
-	loggedId, _ = token.ExtractTokenID(c)
+	loggedId, _ := token.ExtractTokenID(c)
 
-	if loggedId.(string) != c.Param("id") {
+	if loggedId != user.ID {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "You can't edit this data!"})
         return
 	}
@@ -115,16 +114,14 @@ func DeleteUser(c *gin.Context) {
     // Get model if exist
     db := c.MustGet("db").(*gorm.DB)
     var user models.User
-
-	var loggedId interface{}
-
-	loggedId, _ = token.ExtractTokenID(c)
-	if loggedId.(string) != c.Param("id") {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "You can't delete this data!"})
-        return
-	}
     if err := db.Where("id = ?", c.Param("id")).First(&user).Error; err != nil {
         c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
+        return
+    }
+
+    loggedId, _ := token.ExtractTokenID(c)
+    if loggedId != user.ID {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "You can't delete this data!"})
         return
     }
 	if user.Role == "Seller"{

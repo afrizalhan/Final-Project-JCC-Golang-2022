@@ -7,7 +7,7 @@ import (
 type (
     Reviews struct {
         ID          uint      `gorm:"primary_key" json:"id"`
-        Rating        uint    `json:"rating"`
+        Rating        int    `json:"rating"`
 		Comment string `json:"comment"`
 		UserID 		uint `json:"userID"`
 		ProductID 		uint `json:"productID"`

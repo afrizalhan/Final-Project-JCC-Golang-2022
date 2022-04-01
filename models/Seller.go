@@ -1,5 +1,8 @@
 package models
 
+import (
+    "gorm.io/gorm"
+)
 
 type (
     Seller struct {
@@ -12,3 +15,15 @@ type (
         Transaction      	[]Transaction  	 `json:"-"`
     }
 )
+
+func ExtractSeller(id uint, db *gorm.DB) (uint, error) {
+    // get db from gin context
+    var seller Seller
+    if err := db.Where("user_id = ?", id).First(&seller).Error; err != nil {
+        return 0, err
+    }
+
+    idSeller := seller.ID
+
+    return idSeller, nil
+}

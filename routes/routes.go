@@ -26,10 +26,14 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
     r.GET("/customer", controller.GetAllCustomer)
     r.GET("/categories", controller.GetAllCategory)
     r.GET("/user", controller.GetAllUser)
+    r.GET("/product", controller.GetAllProduct)
+    r.GET("/review", controller.GetAllReview)
     r.GET("/seller/:id", controller.GetSellerById)
     r.GET("/customer/:id", controller.GetCustomerById)
     r.GET("/categories/:id", controller.GetCategoryById)
     r.GET("/user/:id", controller.GetUserById)
+    r.GET("/product/:id", controller.GetProductById)
+    r.GET("/review/:id", controller.GetReviewById)
 
     categoryMiddlewareRoute := r.Group("/categories")
     categoryMiddlewareRoute.Use(middlewares.JwtAuthAdmin())
@@ -48,6 +52,18 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
     customerMiddlewareRoute.POST("/", controller.RegisterAsCustomer)
     customerMiddlewareRoute.PATCH("/:id", controller.UpdateCustomer)
     customerMiddlewareRoute.DELETE("/:id", controller.DeleteCustomer)
+
+	productMiddlewareRoute := r.Group("/product")
+    productMiddlewareRoute.Use(middlewares.JwtAuthMiddleware())
+    productMiddlewareRoute.POST("/", controller.CreateProduct)
+    productMiddlewareRoute.PATCH("/:id", controller.UpdateProduct)
+    productMiddlewareRoute.DELETE("/:id", controller.DeleteProduct)
+
+	reviewMiddlewareRoute := r.Group("/review")
+    reviewMiddlewareRoute.Use(middlewares.JwtAuthMiddleware())
+    reviewMiddlewareRoute.POST("/", controller.CreateReview)
+    reviewMiddlewareRoute.PATCH("/:id", controller.UpdateReview)
+    reviewMiddlewareRoute.DELETE("/:id", controller.DeleteReview)
 
 	userMiddlewareRoute := r.Group("/user")
     userMiddlewareRoute.Use(middlewares.JwtAuthMiddleware())

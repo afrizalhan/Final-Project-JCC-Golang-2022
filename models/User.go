@@ -86,3 +86,4 @@ func ExtractRole(id uint, db *gorm.DB) (string, error) {
 
     return role, nil
 }
+
