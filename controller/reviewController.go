@@ -54,7 +54,7 @@ func GetReviewById(c *gin.Context) { // Get model if exist
 }
 
 // CreateReview godoc
-// @Summary Create New Review.
+// @Summary Create New Review (Customer Only).
 // @Description Creating a new Review.
 // @Tags Review
 // @Param Body body ReviewInput true "the body to create a new Review"
@@ -90,7 +90,7 @@ func CreateReview(c *gin.Context) {
 
 
 // UpdateReview godoc
-// @Summary Update Review.
+// @Summary Update Review (Customer Only).
 // @Description Update Review by id.
 // @Tags Review
 // @Produce json
@@ -137,7 +137,7 @@ func UpdateReview(c *gin.Context) {
 }
 
 // DeleteReview godoc
-// @Summary Delete one Review.
+// @Summary Delete one Review (Customer that write the review Only).
 // @Description Delete a Review by id.
 // @Tags Review
 // @Produce json

@@ -54,7 +54,7 @@ func GetProductById(c *gin.Context) { // Get model if exist
 }
 
 // CreateProduct godoc
-// @Summary Create a new Product.
+// @Summary Create a new Product (Seller only).
 // @Description Creating a new Product.
 // @Tags Product
 // @Param Body body ProductInput true "the body to create a new Product"
@@ -95,7 +95,7 @@ func CreateProduct(c *gin.Context) {
 
 
 // UpdateProduct godoc
-// @Summary Update Product.
+// @Summary Update Product (Seller owner product only).
 // @Description Update Product by id.
 // @Tags Product
 // @Produce json
@@ -144,7 +144,7 @@ func UpdateProduct(c *gin.Context) {
 }
 
 // DeleteProduct godoc
-// @Summary Delete one Product.
+// @Summary Delete one Product (Seller owner product and Admin only).
 // @Description Delete a Product by id.
 // @Tags Product
 // @Produce json
@@ -161,13 +161,14 @@ func DeleteProduct(c *gin.Context) {
 	loggedId, _ := token.ExtractTokenID(c)
 	idSeller, _ := models.ExtractSeller(loggedId, db)
 
+    role, _ := models.ExtractRole(loggedId, db)
 	
     if err := db.Where("id = ?", c.Param("id")).First(&product).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
         return
     }
 
-	if idSeller != product.SellerID {
+	if idSeller != product.SellerID && role != "Admin" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "You can't delete this data!"})
 		return
 	}

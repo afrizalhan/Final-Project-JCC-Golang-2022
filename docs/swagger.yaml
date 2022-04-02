@@ -227,7 +227,7 @@ paths:
             $ref: '#/definitions/models.Category'
       security:
       - BearerToken: []
-      summary: Create New Category.
+      summary: Create New Category (Admin Only).
       tags:
       - Category
   /categories/{id}:
@@ -255,7 +255,7 @@ paths:
             type: object
       security:
       - BearerToken: []
-      summary: Delete one Category.
+      summary: Delete one Category (Admin Only).
       tags:
       - Category
     get:
@@ -304,7 +304,7 @@ paths:
             $ref: '#/definitions/models.Category'
       security:
       - BearerToken: []
-      summary: Update Category.
+      summary: Update Category (Admin Only).
       tags:
       - Category
   /customer:
@@ -345,7 +345,7 @@ paths:
             $ref: '#/definitions/models.Customer'
       security:
       - BearerToken: []
-      summary: Register user as a Customer.
+      summary: Register user as a Customer (Guest Only).
       tags:
       - Customer
   /customer/{id}:
@@ -373,7 +373,7 @@ paths:
             type: object
       security:
       - BearerToken: []
-      summary: Delete one Customer.
+      summary: Delete one Customer (Referred Customer and Admin Only).
       tags:
       - Customer
     get:
@@ -422,7 +422,7 @@ paths:
             $ref: '#/definitions/models.Customer'
       security:
       - BearerToken: []
-      summary: Update Customer.
+      summary: Update Customer (Referred Customer Only).
       tags:
       - Customer
   /login:
@@ -484,7 +484,7 @@ paths:
             $ref: '#/definitions/models.Product'
       security:
       - BearerToken: []
-      summary: Create a new Product.
+      summary: Create a new Product (Seller only).
       tags:
       - Product
   /product/{id}:
@@ -512,7 +512,7 @@ paths:
             type: object
       security:
       - BearerToken: []
-      summary: Delete one Product.
+      summary: Delete one Product (Seller owner product and Admin only).
       tags:
       - Product
     get:
@@ -561,7 +561,7 @@ paths:
             $ref: '#/definitions/models.Product'
       security:
       - BearerToken: []
-      summary: Update Product.
+      summary: Update Product (Seller owner product only).
       tags:
       - Product
   /register:
@@ -623,7 +623,7 @@ paths:
             $ref: '#/definitions/models.Reviews'
       security:
       - BearerToken: []
-      summary: Create New Review.
+      summary: Create New Review (Customer Only).
       tags:
       - Review
   /review/{id}:
@@ -651,7 +651,7 @@ paths:
             type: object
       security:
       - BearerToken: []
-      summary: Delete one Review.
+      summary: Delete one Review (Customer that write the review Only).
       tags:
       - Review
     get:
@@ -700,7 +700,7 @@ paths:
             $ref: '#/definitions/models.Reviews'
       security:
       - BearerToken: []
-      summary: Update Review.
+      summary: Update Review (Customer Only).
       tags:
       - Review
   /seller:
@@ -741,7 +741,7 @@ paths:
             $ref: '#/definitions/models.Seller'
       security:
       - BearerToken: []
-      summary: Register user as a Seller.
+      summary: Register user as a Seller (Guest Only).
       tags:
       - Seller
   /seller/{id}:
@@ -769,7 +769,7 @@ paths:
             type: object
       security:
       - BearerToken: []
-      summary: Delete one Seller.
+      summary: Delete one Seller (Referred Seller Only).
       tags:
       - Seller
     get:
@@ -818,7 +818,7 @@ paths:
             $ref: '#/definitions/models.Seller'
       security:
       - BearerToken: []
-      summary: Update Seller.
+      summary: Update Seller (Referred Seller Only).
       tags:
       - Seller
   /transaction:
@@ -841,7 +841,7 @@ paths:
             type: array
       security:
       - BearerToken: []
-      summary: Get all Transaction.
+      summary: Get all Transaction (Admin Only).
       tags:
       - Transaction
     post:
@@ -867,7 +867,7 @@ paths:
             $ref: '#/definitions/models.Transaction'
       security:
       - BearerToken: []
-      summary: Create a new Transaction.
+      summary: Create a new Transaction (Customer Only).
       tags:
       - Transaction
   /transaction/{id}:
@@ -895,12 +895,17 @@ paths:
             type: object
       security:
       - BearerToken: []
-      summary: Delete one Transaction.
+      summary: Delete one Transaction (Admin Only).
       tags:
       - Transaction
     get:
       description: Get an Transaction by id.
       parameters:
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: Transaction id
         in: path
         name: id
@@ -913,7 +918,9 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.Transaction'
-      summary: Get Transaction By Id.
+      security:
+      - BearerToken: []
+      summary: Get Transaction By Id (Admin and Customer in Transaction Only).
       tags:
       - Transaction
     patch:
@@ -944,7 +951,7 @@ paths:
             $ref: '#/definitions/models.Transaction'
       security:
       - BearerToken: []
-      summary: Update Transaction.
+      summary: Update Transaction (Customer and Seller in Transaction Only).
       tags:
       - Transaction
   /user:
@@ -987,7 +994,7 @@ paths:
             type: object
       security:
       - BearerToken: []
-      summary: Delete one User.
+      summary: Delete one User (Admin and Referred User Only).
       tags:
       - User
     get:
@@ -1036,7 +1043,7 @@ paths:
             $ref: '#/definitions/models.User'
       security:
       - BearerToken: []
-      summary: Update User.
+      summary: Update User (Referred User Only).
       tags:
       - User
 swagger: "2.0"

@@ -6,6 +6,7 @@ import (
     "Final-Project/models"
     "Final-Project/utils/token"
     // "strconv"
+    "time"
     "github.com/gin-gonic/gin"
     "gorm.io/gorm"
 )
@@ -18,7 +19,7 @@ type TransactionInput struct {
 }
 
 // GetAllTransaction godoc
-// @Summary Get all Transaction.
+// @Summary Get all Transaction (Admin Only).
 // @Description Get a list of Transaction.
 // @Tags Transaction
 // @Param Authorization header string true "Authorization. How to input in swagger : 'Bearer <insert_your_token_here>'"
@@ -45,7 +46,7 @@ func GetAllTransaction(c *gin.Context) {
 }
 
 // GetTransactionById godoc
-// @Summary Get Transaction By Id.
+// @Summary Get Transaction By Id (Admin and Customer in Transaction Only).
 // @Description Get an Transaction by id.
 // @Tags Transaction
 // @Param Authorization header string true "Authorization. How to input in swagger : 'Bearer <insert_your_token_here>'"
@@ -84,7 +85,7 @@ func GetTransactionById(c *gin.Context) { // Get model if exist
 }
 
 // CreateTransaction godoc
-// @Summary Create a new Transaction.
+// @Summary Create a new Transaction (Customer Only).
 // @Description Creating a new Transaction.
 // @Tags Transaction
 // @Param Body body TransactionInput true "the body to create a new Product"
@@ -134,7 +135,7 @@ func CreateTransaction(c *gin.Context) {
 
 
 // UpdateTransaction godoc
-// @Summary Update Transaction.
+// @Summary Update Transaction (Customer and Seller in Transaction Only).
 // @Description Update Transaction by id.
 // @Tags Transaction
 // @Produce json
@@ -154,12 +155,21 @@ func UpdateTransaction(c *gin.Context) {
         return
     }
 
-	loggedId, _ := token.ExtractTokenID(c)
-	idCustomer, _ := models.ExtractCustomer(loggedId, db)
+    var product models.Product
+    if err := db.Where("id = ?", transaction.ProductID).First(&product).Error; err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
+        return
+    }
+    loggedId, _ := token.ExtractTokenID(c)
 
-    // idString := strconv.FormatUint(uint64(loggedId), 10)
+	role, _ := models.ExtractRole(loggedId, db)
+    var idCustomer uint
+    if role == "Customer"{
+        idCustomer, _ = models.ExtractCustomer(loggedId, db)
+    }
+    idSeller, _ := models.ExtractSeller(loggedId, db)
 
-	if idCustomer != transaction.CustomerID {
+	if idCustomer != transaction.CustomerID && product.SellerID != idSeller {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "You can't edit this data!"})
         return
 	}
@@ -177,6 +187,7 @@ func UpdateTransaction(c *gin.Context) {
     updatedInput.Quantity = input.Quantity
 	updatedInput.TotalPrice = input.Quantity * productPrice
     updatedInput.Status = input.Status
+    updatedInput.UpdatedAt = time.Now()
 
     db.Model(&transaction).Updates(updatedInput)
 
@@ -184,7 +195,7 @@ func UpdateTransaction(c *gin.Context) {
 }
 
 // DeleteTransaction godoc
-// @Summary Delete one Transaction.
+// @Summary Delete one Transaction (Admin Only).
 // @Description Delete a Transaction by id.
 // @Tags Transaction
 // @Produce json

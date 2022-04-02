@@ -60,7 +60,7 @@ const docTemplate = `{
                 "tags": [
                     "Category"
                 ],
-                "summary": "Create New Category.",
+                "summary": "Create New Category (Admin Only).",
                 "parameters": [
                     {
                         "description": "the body to create a new Category",
@@ -130,7 +130,7 @@ const docTemplate = `{
                 "tags": [
                     "Category"
                 ],
-                "summary": "Delete one Category.",
+                "summary": "Delete one Category (Admin Only).",
                 "parameters": [
                     {
                         "type": "string",
@@ -172,7 +172,7 @@ const docTemplate = `{
                 "tags": [
                     "Category"
                 ],
-                "summary": "Update Category.",
+                "summary": "Update Category (Admin Only).",
                 "parameters": [
                     {
                         "type": "string",
@@ -243,7 +243,7 @@ const docTemplate = `{
                 "tags": [
                     "Customer"
                 ],
-                "summary": "Register user as a Customer.",
+                "summary": "Register user as a Customer (Guest Only).",
                 "parameters": [
                     {
                         "description": "the body to create a new Customer",
@@ -313,7 +313,7 @@ const docTemplate = `{
                 "tags": [
                     "Customer"
                 ],
-                "summary": "Delete one Customer.",
+                "summary": "Delete one Customer (Referred Customer and Admin Only).",
                 "parameters": [
                     {
                         "type": "string",
@@ -355,7 +355,7 @@ const docTemplate = `{
                 "tags": [
                     "Customer"
                 ],
-                "summary": "Update Customer.",
+                "summary": "Update Customer (Referred Customer Only).",
                 "parameters": [
                     {
                         "type": "string",
@@ -458,7 +458,7 @@ const docTemplate = `{
                 "tags": [
                     "Product"
                 ],
-                "summary": "Create a new Product.",
+                "summary": "Create a new Product (Seller only).",
                 "parameters": [
                     {
                         "description": "the body to create a new Product",
@@ -528,7 +528,7 @@ const docTemplate = `{
                 "tags": [
                     "Product"
                 ],
-                "summary": "Delete one Product.",
+                "summary": "Delete one Product (Seller owner product and Admin only).",
                 "parameters": [
                     {
                         "type": "string",
@@ -570,7 +570,7 @@ const docTemplate = `{
                 "tags": [
                     "Product"
                 ],
-                "summary": "Update Product.",
+                "summary": "Update Product (Seller owner product only).",
                 "parameters": [
                     {
                         "type": "string",
@@ -673,7 +673,7 @@ const docTemplate = `{
                 "tags": [
                     "Review"
                 ],
-                "summary": "Create New Review.",
+                "summary": "Create New Review (Customer Only).",
                 "parameters": [
                     {
                         "description": "the body to create a new Review",
@@ -743,7 +743,7 @@ const docTemplate = `{
                 "tags": [
                     "Review"
                 ],
-                "summary": "Delete one Review.",
+                "summary": "Delete one Review (Customer that write the review Only).",
                 "parameters": [
                     {
                         "type": "string",
@@ -785,7 +785,7 @@ const docTemplate = `{
                 "tags": [
                     "Review"
                 ],
-                "summary": "Update Review.",
+                "summary": "Update Review (Customer Only).",
                 "parameters": [
                     {
                         "type": "string",
@@ -856,7 +856,7 @@ const docTemplate = `{
                 "tags": [
                     "Seller"
                 ],
-                "summary": "Register user as a Seller.",
+                "summary": "Register user as a Seller (Guest Only).",
                 "parameters": [
                     {
                         "description": "the body to create a new Seller",
@@ -926,7 +926,7 @@ const docTemplate = `{
                 "tags": [
                     "Seller"
                 ],
-                "summary": "Delete one Seller.",
+                "summary": "Delete one Seller (Referred Seller Only).",
                 "parameters": [
                     {
                         "type": "string",
@@ -968,7 +968,7 @@ const docTemplate = `{
                 "tags": [
                     "Seller"
                 ],
-                "summary": "Update Seller.",
+                "summary": "Update Seller (Referred Seller Only).",
                 "parameters": [
                     {
                         "type": "string",
@@ -1018,7 +1018,7 @@ const docTemplate = `{
                 "tags": [
                     "Transaction"
                 ],
-                "summary": "Get all Transaction.",
+                "summary": "Get all Transaction (Admin Only).",
                 "parameters": [
                     {
                         "type": "string",
@@ -1053,7 +1053,7 @@ const docTemplate = `{
                 "tags": [
                     "Transaction"
                 ],
-                "summary": "Create a new Transaction.",
+                "summary": "Create a new Transaction (Customer Only).",
                 "parameters": [
                     {
                         "description": "the body to create a new Product",
@@ -1084,6 +1084,11 @@ const docTemplate = `{
         },
         "/transaction/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
                 "description": "Get an Transaction by id.",
                 "produces": [
                     "application/json"
@@ -1091,8 +1096,15 @@ const docTemplate = `{
                 "tags": [
                     "Transaction"
                 ],
-                "summary": "Get Transaction By Id.",
+                "summary": "Get Transaction By Id (Admin and Customer in Transaction Only).",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization. How to input in swagger : 'Bearer \u003cinsert_your_token_here\u003e'",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "Transaction id",
@@ -1123,7 +1135,7 @@ const docTemplate = `{
                 "tags": [
                     "Transaction"
                 ],
-                "summary": "Delete one Transaction.",
+                "summary": "Delete one Transaction (Admin Only).",
                 "parameters": [
                     {
                         "type": "string",
@@ -1165,7 +1177,7 @@ const docTemplate = `{
                 "tags": [
                     "Transaction"
                 ],
-                "summary": "Update Transaction.",
+                "summary": "Update Transaction (Customer and Seller in Transaction Only).",
                 "parameters": [
                     {
                         "type": "string",
@@ -1265,7 +1277,7 @@ const docTemplate = `{
                 "tags": [
                     "User"
                 ],
-                "summary": "Delete one User.",
+                "summary": "Delete one User (Admin and Referred User Only).",
                 "parameters": [
                     {
                         "type": "string",
@@ -1307,7 +1319,7 @@ const docTemplate = `{
                 "tags": [
                     "User"
                 ],
-                "summary": "Update User.",
+                "summary": "Update User (Referred User Only).",
                 "parameters": [
                     {
                         "type": "string",

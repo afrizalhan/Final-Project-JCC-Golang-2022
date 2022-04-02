@@ -54,7 +54,7 @@ func GetUserById(c *gin.Context) { // Get model if exist
 }
 
 // UpdateUser godoc
-// @Summary Update User.
+// @Summary Update User (Referred User Only).
 // @Description Update User by id.
 // @Tags User
 // @Produce json
@@ -101,7 +101,7 @@ func UpdateUser(c *gin.Context) {
 }
 
 // DeleteUser godoc
-// @Summary Delete one User.
+// @Summary Delete one User (Admin and Referred User Only).
 // @Description Delete a User by id.
 // @Tags User
 // @Produce json
@@ -120,7 +120,10 @@ func DeleteUser(c *gin.Context) {
     }
 
     loggedId, _ := token.ExtractTokenID(c)
-    if loggedId != user.ID {
+    role, _ := models.ExtractRole(loggedId, db)
+
+    
+    if loggedId != user.ID && role != "Admin" {
         c.JSON(http.StatusBadRequest, gin.H{"error": "You can't delete this data!"})
         return
     }

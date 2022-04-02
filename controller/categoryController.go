@@ -31,7 +31,7 @@ func GetAllCategory(c *gin.Context) {
 }
 
 // CreateCategory godoc
-// @Summary Create New Category.
+// @Summary Create New Category (Admin Only).
 // @Description Creating a new Category.
 // @Tags Category
 // @Param Body body categoryInput true "the body to create a new Category"
@@ -76,7 +76,7 @@ func GetCategoryById(c *gin.Context) { // Get model if exist
 }
 
 // UpdateCategory godoc
-// @Summary Update Category.
+// @Summary Update Category (Admin Only).
 // @Description Update Category by id.
 // @Tags Category
 // @Produce json
@@ -113,7 +113,7 @@ func UpdateCategory(c *gin.Context) {
 }
 
 // DeleteCategory godoc
-// @Summary Delete one Category.
+// @Summary Delete one Category (Admin Only).
 // @Description Delete a Category by id.
 // @Tags Category
 // @Produce json

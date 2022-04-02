@@ -52,7 +52,7 @@ func GetCustomerById(c *gin.Context) { // Get model if exist
 }
 
 // RegisterAsCustomer godoc
-// @Summary Register user as a Customer.
+// @Summary Register user as a Customer (Guest Only).
 // @Description Creating a new Customer.
 // @Tags Customer
 // @Param Body body CustomerInput true "the body to create a new Customer"
@@ -99,7 +99,7 @@ func RegisterAsCustomer(c *gin.Context) {
 
 
 // UpdateCustomer godoc
-// @Summary Update Customer.
+// @Summary Update Customer (Referred Customer Only).
 // @Description Update Customer by id.
 // @Tags Customer
 // @Produce json
@@ -145,7 +145,7 @@ func UpdateCustomer(c *gin.Context) {
 }
 
 // DeleteCustomer godoc
-// @Summary Delete one Customer.
+// @Summary Delete one Customer (Referred Customer and Admin Only).
 // @Description Delete a Customer by id.
 // @Tags Customer
 // @Produce json
@@ -163,12 +163,14 @@ func DeleteCustomer(c *gin.Context) {
 
     // idString := strconv.FormatUint(uint64(loggedId), 10)
 
+    role, _ := models.ExtractRole(loggedId, db)
+
     
     if err := db.Where("id = ?", c.Param("id")).First(&customer).Error; err != nil {
         c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
         return
     }
-    if loggedId != customer.UserID {
+    if loggedId != customer.UserID && role != "Admin" {
         c.JSON(http.StatusBadRequest, gin.H{"error": "You can't edit this data!"})
         return
     }

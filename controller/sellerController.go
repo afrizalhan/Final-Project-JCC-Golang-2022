@@ -54,7 +54,7 @@ func GetSellerById(c *gin.Context) { // Get model if exist
 }
 
 // RegisterAsSeller godoc
-// @Summary Register user as a Seller.
+// @Summary Register user as a Seller (Guest Only).
 // @Description Creating a new Seller.
 // @Tags Seller
 // @Param Body body SellerInput true "the body to create a new Seller"
@@ -101,7 +101,7 @@ func RegisterAsSeller(c *gin.Context) {
 }
 
 // UpdateSeller godoc
-// @Summary Update Seller.
+// @Summary Update Seller (Referred Seller Only).
 // @Description Update seller by id.
 // @Tags Seller
 // @Produce json
@@ -148,7 +148,7 @@ func UpdateSeller(c *gin.Context) {
 }
 
 // DeleteSeller godoc
-// @Summary Delete one Seller.
+// @Summary Delete one Seller (Referred Seller Only).
 // @Description Delete a Seller by id.
 // @Tags Seller
 // @Produce json
@@ -164,14 +164,14 @@ func DeleteSeller(c *gin.Context) {
 
 	loggedId, _ := token.ExtractTokenID(c)
 
-    // idString := strconv.FormatUint(uint64(loggedId), 10)
+    role, _ := models.ExtractRole(loggedId, db)
 
     
     if err := db.Where("id = ?", c.Param("id")).First(&seller).Error; err != nil {
         c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
         return
     }
-    if loggedId != seller.UserID {
+    if loggedId != seller.UserID && role != "Admin"{
         c.JSON(http.StatusBadRequest, gin.H{"error": "You can't delete this data!"})
         return
     }
