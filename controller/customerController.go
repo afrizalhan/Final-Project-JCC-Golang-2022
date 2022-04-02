@@ -175,5 +175,16 @@ func DeleteCustomer(c *gin.Context) {
 
     db.Delete(&customer)
 
+    var user models.User
+    if err := db.Where("id = ?", loggedId).First(&user).Error; err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
+        return
+    }
+
+	var updatedInput models.User
+    updatedInput.Role = "Guest"
+
+    db.Model(&user).Updates(updatedInput)
+
     c.JSON(http.StatusOK, gin.H{"data": true})
 }

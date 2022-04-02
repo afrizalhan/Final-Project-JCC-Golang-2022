@@ -65,6 +65,14 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
     reviewMiddlewareRoute.PATCH("/:id", controller.UpdateReview)
     reviewMiddlewareRoute.DELETE("/:id", controller.DeleteReview)
 
+    transactionMiddlewareRoute := r.Group("/transaction")
+    transactionMiddlewareRoute.Use(middlewares.JwtAuthMiddleware())
+    transactionMiddlewareRoute.GET("/", controller.GetAllTransaction)
+    transactionMiddlewareRoute.GET("/:id", controller.GetTransactionById)
+    transactionMiddlewareRoute.POST("/", controller.CreateTransaction)
+    transactionMiddlewareRoute.PATCH("/:id", controller.UpdateTransaction)
+    transactionMiddlewareRoute.DELETE("/:id", controller.DeleteTransaction)
+
 	userMiddlewareRoute := r.Group("/user")
     userMiddlewareRoute.Use(middlewares.JwtAuthMiddleware())
     userMiddlewareRoute.PATCH("/:id", controller.UpdateUser)

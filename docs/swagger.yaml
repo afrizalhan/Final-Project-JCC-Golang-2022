@@ -53,6 +53,17 @@ definitions:
       name:
         type: string
     type: object
+  controller.TransactionInput:
+    properties:
+      description:
+        type: string
+      productID:
+        type: integer
+      quantity:
+        type: integer
+      status:
+        type: string
+    type: object
   controller.UserInput:
     properties:
       password:
@@ -126,6 +137,29 @@ definitions:
       id:
         type: integer
       name:
+        type: string
+      userID:
+        type: integer
+    type: object
+  models.Transaction:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      productID:
+        type: integer
+      quantity:
+        type: integer
+      sellerID:
+        type: integer
+      string:
+        type: string
+      total_price:
+        type: integer
+      updated_at:
         type: string
       userID:
         type: integer
@@ -787,6 +821,132 @@ paths:
       summary: Update Seller.
       tags:
       - Seller
+  /transaction:
+    get:
+      description: Get a list of Transaction.
+      parameters:
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Transaction'
+            type: array
+      security:
+      - BearerToken: []
+      summary: Get all Transaction.
+      tags:
+      - Transaction
+    post:
+      description: Creating a new Transaction.
+      parameters:
+      - description: the body to create a new Product
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/controller.TransactionInput'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Transaction'
+      security:
+      - BearerToken: []
+      summary: Create a new Transaction.
+      tags:
+      - Transaction
+  /transaction/{id}:
+    delete:
+      description: Delete a Transaction by id.
+      parameters:
+      - description: Transaction id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: boolean
+            type: object
+      security:
+      - BearerToken: []
+      summary: Delete one Transaction.
+      tags:
+      - Transaction
+    get:
+      description: Get an Transaction by id.
+      parameters:
+      - description: Transaction id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Transaction'
+      summary: Get Transaction By Id.
+      tags:
+      - Transaction
+    patch:
+      description: Update Transaction by id.
+      parameters:
+      - description: Transaction id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: the body to update transaction
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/controller.TransactionInput'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Transaction'
+      security:
+      - BearerToken: []
+      summary: Update Transaction.
+      tags:
+      - Transaction
   /user:
     get:
       description: Get a list of User.

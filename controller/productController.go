@@ -42,7 +42,7 @@ func GetAllProduct(c *gin.Context) {
 // @Success 200 {object} models.Product
 // @Router /product/{id} [get]
 func GetProductById(c *gin.Context) { // Get model if exist
-    var product models.Customer
+    var product models.Product
 
     db := c.MustGet("db").(*gorm.DB)
     if err := db.Where("id = ?", c.Param("id")).First(&product).Error; err != nil {
@@ -75,13 +75,18 @@ func CreateProduct(c *gin.Context) {
 	loggedId, _ := token.ExtractTokenID(c)
 
     role, _ := models.ExtractRole(loggedId, db)
+    idSeller, _ := models.ExtractSeller(loggedId, db)
 
     if role != "Seller" {
         c.JSON(http.StatusBadRequest, gin.H{"error": "only seller could create a new product"})
         return
     }
 
-    product := models.Product{Name: input.Name, Description: input.Description, Price: input.Price, CategoryID: input.CategoryID, SellerID: loggedId}
+    product := models.Product{Name: input.Name, 
+        Description: input.Description, 
+        Price: input.Price, 
+        CategoryID: input.CategoryID, 
+        SellerID: idSeller}
     db.Create(&product)
 
     c.JSON(http.StatusOK, gin.H{"data": product})
