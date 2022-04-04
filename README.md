@@ -1,5 +1,8 @@
 # Final-Project-JCC-Golang-2022
 This is a Ecommerce API made with Golang
+Use this combination to log in as Admin :
+Username : admin
+Password : admin
 
 ## API Policy
 - User can register as Guest and then choose to Register as a Seller or Customer
