@@ -1,5 +1,5 @@
 # Final-Project-JCC-Golang-2022
-This is a Ecommerce API made with Golang
+This is a Ecommerce API made with Golang.
 Use this combination to log in as Admin :
 Username : admin
 Password : admin
